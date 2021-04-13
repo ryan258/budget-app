@@ -22,19 +22,34 @@ const store = createStore((state = { count: 0 }, action) => {
   switch (action.type) {
     case 'INCREMENT':
       // return the new state - we're not changing the state or action, we're just computing a new state
-      return { count: state.count + 1 }
+      //! vv here we're rocking our dynamic action vv
+      const incrementBy = typeof action.incrementBy === 'number' ? action.incrementBy : 1
+      return { count: state.count + incrementBy }
     case 'DECREMENT':
-      return { count: state.count - 1 }
+      const decrementBy = typeof action.decrementBy === 'number' ? action.decrementBy : 1
+      return { count: state.count - decrementBy }
     case 'RESET':
       return { count: 0 }
+    case 'SET':
+      // here's a required action field in action
+      return { count: action.count }
     default:
       // console.log('running')
       return state
   }
 })
 
+//! .subscribe(fn) gets called every time the store changes
+// - it's a great way to do something when the state changes
+// we can also unsubcribe by putting this in a variable
+// - then call it when we're done i.e. unsubscribe()
+const unsubscribe = store.subscribe(() => {
+  // prints the state every time it changes
+  console.log(store.getState())
+})
+
 // return the current state object w/ .getState()
-console.log(store.getState())
+// console.log(store.getState())
 
 //! We can change the data in the store with ACTIONS
 // - an action is just an object that gets sent to the store
@@ -46,8 +61,15 @@ console.log(store.getState())
 //! We send this object to the store with DISPATCH (store.dispatch({})) - then the store can do something with this information
 // - when we dispatch to the store is runs the store function again - using the object to make changes to the state
 store.dispatch({
-  type: 'INCREMENT'
+  type: 'INCREMENT',
+  // we can also add more values to the action object and have DYNAMIC ACTIONS
+  incrementBy: 5
 })
+
+// we're calling the unsubscribe variable we put the subscribe call into
+// - so just call the variable we put that subscribe() call into and viola, it magically unsubscribes
+// unsubscribe()
+
 store.dispatch({
   type: 'INCREMENT'
 })
@@ -57,5 +79,15 @@ store.dispatch({
 store.dispatch({
   type: 'DECREMENT'
 })
+store.dispatch({
+  type: 'DECREMENT',
+  decrementBy: 10
+})
 
-console.log(store.getState())
+// we'll require a value for a dynamic action - like it's not optional
+store.dispatch({
+  type: 'SET',
+  count: 101
+})
+
+// console.log(store.getState())
