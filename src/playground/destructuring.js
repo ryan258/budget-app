@@ -1,6 +1,47 @@
 // Destructuring means we can rip the data apart and put things in their own variables.
 
-const person = {
+//! /////////////////// !//
+//! ARRAY DESTRUCTURING !//
+//! /////////////////// !//
+
+const address = ['123 Fake Street', 'Moralton', 'Arkansas', '72710']
+
+//! Option #1
+console.log(`You are in ${address[1]}, ${address[2]}`)
+// You are in Moralton, Arkansas
+
+//! Option #2
+// const city = address[1]
+// const state = address[2]
+// console.log(`You are in ${city}, ${state}`)
+// You are in Moralton, Arkansas
+
+//! Option #3 - DESTRUCTURE
+// - it matches array items up by position
+// const [street, city, state, zip] = address
+// - you can also just have an empty name and it will skip that item
+const [, city, state] = address
+console.log(`You are in ${city}, ${state}`)
+// You are in Moralton, Arkansas
+
+//! Option #4 - DESTRUCTURE - w/ DEFAULTS
+const address2 = ['123 Fake Street', 'Moralton']
+const [, city2, state2 = 'AR'] = address2
+console.log(`You are in ${city2}, ${state2}`)
+// You are in Moralton, AR
+
+//!!!!!!! CHALLENGE !!!!!!! - Grab 1st and 3rd items using array destructuring
+const item = ['Coffee (iced)', '$3', '$5', '$7.50']
+const [itemName, , mdPrice] = item
+
+console.log(`A medium ${itemName} costs ${mdPrice}`)
+// A medium Coffee (iced) costs $5
+
+//! //////////////////// !//
+//! OBJECT DESTRUCTURING !//
+//! //////////////////// !//
+
+/*const person = {
   name: 'Manny',
   age: 15,
   location: {
@@ -71,3 +112,4 @@ const book = {
 
 const { name: publisherName = 'Self-Published' } = book.publisher
 console.log(publisherName)
+*/
