@@ -17,6 +17,11 @@ const removeExpense = ({ id } = {}) => ({
   id
 })
 // - EDIT_EXPENSE
+const editExpense = (id, updates) => ({
+  type: 'EDIT_EXPENSE',
+  id,
+  updates
+})
 // - SET_TEXT_FILTER
 // - SORT_BY_DATE
 // - SORT_BY_AMOUNT
@@ -31,6 +36,19 @@ const expensesReducer = (state = expensesReducerDefaultState, action) => {
       return [...state, action.expense]
     case 'REMOVE_EXPENSE':
       return state.filter(({ id }) => id !== action.id)
+    case 'EDIT_EXPENSE':
+      return state.map((expense) => {
+        if (expense.id === action.id) {
+          return {
+            // get the existing properties
+            ...expense,
+            // override just the updates they passed in
+            ...action.updates
+          }
+        } else {
+          return expense
+        }
+      })
     default:
       return state
   }
@@ -58,9 +76,11 @@ store.subscribe(() => {
 })
 
 const expenseOne = store.dispatch(addExpense({ description: 'Rent', amount: 100 }))
-const expenseTwo = store.dispatch(addExpense({ description: 'Red Bull', amount: 300 }))
+const expenseTwo = store.dispatch(addExpense({ description: 'Coffee', amount: 300 }))
 
 store.dispatch(removeExpense({ id: expenseOne.expense.id }))
+
+store.dispatch(editExpense(expenseTwo.expense.id, { amount: 500 }))
 
 //! All the data we'll want to track to create the app
 const demoState = {
@@ -80,3 +100,21 @@ const demoState = {
     endDate: undefined
   }
 }
+
+// Object Spread operator - like array spread but some differences
+// - allows us to grab from existing objects
+// - spread copies contents of an object and places them into a new object
+// - it's useful because we don't want to mutate objects either
+/*
+const user = {
+  name: 'Manny',
+  age: 21
+}
+
+console.log({
+  ...user,
+  location: 'Key West',
+  age: 42
+})
+*/
+// log: {name: "Manny", age: 42, location: "Key West"}
