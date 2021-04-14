@@ -107,6 +107,23 @@ const filtersReducer = (state = filtersReducerDefaultState, action) => {
   }
 }
 
+// timestamps (count in milliseconds) - count from midnight Jan 1st, 1970 (unix epoch)
+// +- integer = timestamp value (2240, 10, -404)
+//
+
+//! GET VISIBLE EXPENSES
+// const getVisibleExpenses = (expenses, filters) => {
+const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
+  return expenses.filter((expense) => {
+    // are there matches?
+    const startDateMatch = typeof startDate !== 'number' || expense.createdAt >= startDate
+    const endDateMatch = typeof endDate !== 'number' || expense.createdAt <= endDate
+    const textMatch = expense.description.toLowerCase().includes(text.toLowerCase())
+
+    return startDateMatch && endDateMatch && textMatch
+  })
+}
+
 //! STORE CREATION
 const store = createStore(
   combineReducers({
@@ -116,27 +133,32 @@ const store = createStore(
 )
 
 store.subscribe(() => {
-  console.log(store.getState())
+  const state = store.getState() // get entire state array and all the filters
+  const visibleExpenses = getVisibleExpenses(state.expenses, state.filters)
+  // console.log(store.getState())
+  console.log(visibleExpenses)
 })
 console.log('add expenses')
-const expenseOne = store.dispatch(addExpense({ description: 'Rent', amount: 100 }))
-const expenseTwo = store.dispatch(addExpense({ description: 'Coffee', amount: 300 }))
-console.log('remove expense')
-store.dispatch(removeExpense({ id: expenseOne.expense.id }))
-console.log('edit expense')
-store.dispatch(editExpense(expenseTwo.expense.id, { amount: 500 }))
+const expenseOne = store.dispatch(addExpense({ description: 'Rent', amount: 100, createdAt: 1000 }))
+const expenseTwo = store.dispatch(addExpense({ description: 'Coffee', amount: 300, createdAt: -1000 }))
+
+// console.log('remove expense')
+// store.dispatch(removeExpense({ id: expenseOne.expense.id }))
+// console.log('edit expense')
+// store.dispatch(editExpense(expenseTwo.expense.id, { amount: 500 }))
 console.log('filter')
-store.dispatch(setTextFilter('rent'))
-store.dispatch(setTextFilter(''))
-console.log('sort')
-store.dispatch(sortByAmount())
-store.dispatch(sortByDate())
-console.log('set start date')
-store.dispatch(setStartDate(125))
-store.dispatch(setStartDate())
-console.log('set end date')
-store.dispatch(setEndDate(2500))
-store.dispatch(setEndDate())
+// store.dispatch(setTextFilter('rent'))
+store.dispatch(setTextFilter('e'))
+// store.dispatch(setTextFilter(''))
+// console.log('sort')
+// store.dispatch(sortByAmount())
+// store.dispatch(sortByDate())
+// console.log('set start date')
+// store.dispatch(setStartDate(2125))
+// store.dispatch(setStartDate())
+// console.log('set end date')
+// store.dispatch(setEndDate(-2500))
+// store.dispatch(setEndDate())
 
 //! All the data we'll want to track to create the app
 const demoState = {
