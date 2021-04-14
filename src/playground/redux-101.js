@@ -27,9 +27,26 @@ const setCount = ({ count } = {}) => ({
 
 const resetCount = () => ({ type: 'RESET', count: 0 })
 
-import { createStore } from 'redux'
+//! This function is called a REDUCER
+//! 1.) Reducers are pure functions
+//     - output is purely determined by the input,
+//     -- it doesn't use anything from outside the functions scope,
+// example of a not pure function bc it depends on something other than it's input, a global variable - we don't want thtat
+// let a = 10
+// const add = (b) => a + b
+//     -- it doesn't change anything outside the function's scope
+// not pure bc it is interacting with the result variable outside of its scope
+// let result
+// const add = (a, b) => {
+//   result = a + b
+// }
+//! 2.) Never change state or action
+// - Just return an object that returns the new state
 
-const store = createStore((state = { count: 0 }, action) => {
+//----- REDUCERS -----//
+// - ACTIONS describe the fact something happened
+// - REDUCERS specify how the app's state changes in response
+const countReducer = (state = { count: 0 }, action) => {
   switch (action.type) {
     case 'INCREMENT':
       //                   step 3 - access incrementBy of action
@@ -44,7 +61,10 @@ const store = createStore((state = { count: 0 }, action) => {
     default:
       return state
   }
-})
+}
+
+import { createStore } from 'redux'
+const store = createStore(countReducer)
 
 const unsubscribe = store.subscribe(() => {
   console.log(store.getState())
