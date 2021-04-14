@@ -114,14 +114,23 @@ const filtersReducer = (state = filtersReducerDefaultState, action) => {
 //! GET VISIBLE EXPENSES
 // const getVisibleExpenses = (expenses, filters) => {
 const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
-  return expenses.filter((expense) => {
-    // are there matches?
-    const startDateMatch = typeof startDate !== 'number' || expense.createdAt >= startDate
-    const endDateMatch = typeof endDate !== 'number' || expense.createdAt <= endDate
-    const textMatch = expense.description.toLowerCase().includes(text.toLowerCase())
+  return expenses
+    .filter((expense) => {
+      // are there matches?
+      const startDateMatch = typeof startDate !== 'number' || expense.createdAt >= startDate
+      const endDateMatch = typeof endDate !== 'number' || expense.createdAt <= endDate
+      const textMatch = expense.description.toLowerCase().includes(text.toLowerCase())
 
-    return startDateMatch && endDateMatch && textMatch
-  })
+      return startDateMatch && endDateMatch && textMatch
+    })
+    .sort((a, b) => {
+      if (sortBy === 'date') {
+        return a.createdAt < b.createdAt ? 1 : -1
+      }
+      if (sortBy === 'amount') {
+        return a.amount < b.amount ? 1 : -1
+      }
+    })
 }
 
 //! STORE CREATION
@@ -139,19 +148,19 @@ store.subscribe(() => {
   console.log(visibleExpenses)
 })
 console.log('add expenses')
-const expenseOne = store.dispatch(addExpense({ description: 'Rent', amount: 100, createdAt: 1000 }))
-const expenseTwo = store.dispatch(addExpense({ description: 'Coffee', amount: 300, createdAt: -1000 }))
+const expenseOne = store.dispatch(addExpense({ description: 'Rent', amount: 100, createdAt: -22100 }))
+const expenseTwo = store.dispatch(addExpense({ description: 'Coffee', amount: 300, createdAt: 1000 }))
 
 // console.log('remove expense')
 // store.dispatch(removeExpense({ id: expenseOne.expense.id }))
 // console.log('edit expense')
 // store.dispatch(editExpense(expenseTwo.expense.id, { amount: 500 }))
-console.log('filter')
+// console.log('filter')
 // store.dispatch(setTextFilter('rent'))
-store.dispatch(setTextFilter('e'))
+// store.dispatch(setTextFilter('e'))
 // store.dispatch(setTextFilter(''))
-// console.log('sort')
-// store.dispatch(sortByAmount())
+console.log('sort')
+store.dispatch(sortByAmount())
 // store.dispatch(sortByDate())
 // console.log('set start date')
 // store.dispatch(setStartDate(2125))
