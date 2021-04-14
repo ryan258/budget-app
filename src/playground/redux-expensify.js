@@ -23,10 +23,28 @@ const editExpense = (id, updates) => ({
   updates
 })
 // - SET_TEXT_FILTER
+const setTextFilter = (text = '') => ({
+  type: 'SET_TEXT_FILTER',
+  text
+})
 // - SORT_BY_DATE
+const sortByDate = () => ({
+  type: 'SORT_BY_DATE'
+})
 // - SORT_BY_AMOUNT
-// - SORT_STATE_DATE
-// - SORT_END_DATE
+const sortByAmount = () => ({
+  type: 'SORT_BY_AMOUNT'
+})
+// - SET_START_DATE
+const setStartDate = (startDate) => ({
+  type: 'SET_START_DATE',
+  startDate
+})
+// - SET_END_DATE
+const setEndDate = (endDate) => ({
+  type: 'SET_END_DATE',
+  endDate
+})
 
 //! EXPENSES REDUCER
 const expensesReducerDefaultState = []
@@ -56,8 +74,34 @@ const expensesReducer = (state = expensesReducerDefaultState, action) => {
 
 //! FILTERS REDUCER
 const filtersReducerDefaultState = { text: '', sortBy: 'date', startDate: undefined, endDate: undefined }
+
 const filtersReducer = (state = filtersReducerDefaultState, action) => {
-  switch (action) {
+  switch (action.type) {
+    case 'SET_TEXT_FILTER':
+      return {
+        ...state,
+        text: action.text
+      }
+    case 'SORT_BY_AMOUNT':
+      return {
+        ...state,
+        sortBy: 'amount'
+      }
+    case 'SORT_BY_DATE':
+      return {
+        ...state,
+        sortBy: 'date'
+      }
+    case 'SET_START_DATE':
+      return {
+        ...state,
+        startDate: action.startDate
+      }
+    case 'SET_END_DATE':
+      return {
+        ...state,
+        endDate: action.endDate
+      }
     default:
       return state
   }
@@ -74,13 +118,25 @@ const store = createStore(
 store.subscribe(() => {
   console.log(store.getState())
 })
-
+console.log('add expenses')
 const expenseOne = store.dispatch(addExpense({ description: 'Rent', amount: 100 }))
 const expenseTwo = store.dispatch(addExpense({ description: 'Coffee', amount: 300 }))
-
+console.log('remove expense')
 store.dispatch(removeExpense({ id: expenseOne.expense.id }))
-
+console.log('edit expense')
 store.dispatch(editExpense(expenseTwo.expense.id, { amount: 500 }))
+console.log('filter')
+store.dispatch(setTextFilter('rent'))
+store.dispatch(setTextFilter(''))
+console.log('sort')
+store.dispatch(sortByAmount())
+store.dispatch(sortByDate())
+console.log('set start date')
+store.dispatch(setStartDate(125))
+store.dispatch(setStartDate())
+console.log('set end date')
+store.dispatch(setEndDate(2500))
+store.dispatch(setEndDate())
 
 //! All the data we'll want to track to create the app
 const demoState = {
