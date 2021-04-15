@@ -35,3 +35,5 @@ const mapStateToProps = (state) => {
 //! 2) export a connected version of this component
 // export default ExpenseListFilters
 export default connect(mapStateToProps)(ExpenseListFilters)
+// - also when you use connect you don't have to take anything from the state, no values, but does give us access to dispatch
+// export default connect()(ExpenseListFilters)
