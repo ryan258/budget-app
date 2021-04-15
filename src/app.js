@@ -27,6 +27,10 @@ console.log(store.getState())
 
 store.dispatch(setTextFilter('potatoes'))
 
+setTimeout(() => {
+  store.dispatch(setTextFilter('Bill'))
+}, 3000)
+
 const state = store.getState()
 const visibleExpenses = getVisibleExpenses(state.expenses, state.filters)
 console.log(visibleExpenses)
@@ -35,6 +39,7 @@ console.log(visibleExpenses)
 //! 2) Wrap the Provider around our app
 const jsx = (
   <Provider store={store}>
+    {/* With this wrapping all our components have access to the store */}
     <AppRouter />
   </Provider>
 )

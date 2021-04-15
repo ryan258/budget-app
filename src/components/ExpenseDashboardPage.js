@@ -5,6 +5,7 @@ import ExpenseList from './ExpenseList'
 
 const ExpenseDashboardPage = () => (
   <div>
+    {/* Amongst it all, we just render the ExpenseList as is  */}
     <ExpenseList />
   </div>
 )
