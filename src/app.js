@@ -1,10 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+//! 1) Get Provider from react-redux module
+// - Provider allows us to provide the store to all the components in our app, now we no longer have to worry about passing the store around, components that want to access the store can just access the store straight away
+import { Provider } from 'react-redux'
 
 import AppRouter from './routers/AppRouter'
 
 import configureStore from './store/configureStore'
-//! 1.) Grab the things we know we'll need
+
 import { addExpense } from './actions/expenses'
 import { setTextFilter } from './actions/filters'
 import getVisibleExpenses from './selectors/expenses'
@@ -17,23 +20,23 @@ const store = configureStore()
 
 console.log(store.getState())
 
-//! 2. Add expenses
 store.dispatch(addExpense({ description: 'Water Bill' }))
 store.dispatch(addExpense({ description: 'Gas bill' }))
 store.dispatch(addExpense({ description: 'Potatoes' }))
 console.log(store.getState())
 
-//! 3. Add filter
 store.dispatch(setTextFilter('potatoes'))
 
-//! 4.
-//! - can be put in a subscribe call to make it reactive
-// store.subscribe(() => {
-// get state and all the filters
 const state = store.getState()
-// get the visible expenses / filtered results
 const visibleExpenses = getVisibleExpenses(state.expenses, state.filters)
 console.log(visibleExpenses)
-// })
 
-ReactDOM.render(<AppRouter />, document.getElementById('app'))
+// ReactDOM.render(<AppRouter />, document.getElementById('app'))
+//! 2) Wrap the Provider around our app
+const jsx = (
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>
+)
+
+ReactDOM.render(jsx, document.getElementById('app'))
