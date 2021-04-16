@@ -21,7 +21,8 @@ export default class ExpenseForm extends React.Component {
     amount: '',
     //! 3) Add state for the date, a new instance of moment to pass down
     createdAt: moment(),
-    calendarFocused: false
+    calendarFocused: false,
+    error: ''
   }
 
   //! 4) Customize props and functionality
@@ -55,10 +56,25 @@ export default class ExpenseForm extends React.Component {
     }
   }
 
+  onSubmit = (e) => {
+    e.preventDefault()
+    // add validation for description and the amount
+    if (!this.state.description || !this.state.amount) {
+      // Set error state equal to 'Please provide description and amount.'
+      // const error = 'Please provide description and amount.'
+      this.setState(() => ({ error: 'Please provide description and amount.' }))
+    } else {
+      this.setState(() => ({ error: '' }))
+      // Clear the error state
+      console.log('submitted')
+    }
+  }
+
   render() {
     return (
       <div>
-        <form>
+        {this.state.error && <p>{this.state.error}</p>}
+        <form onSubmit={this.onSubmit}>
           <input //
             type="text"
             placeholder="Description"
