@@ -1,5 +1,14 @@
 // This component will contain all the form markup and logic
 import React from 'react'
+//! 0) Imports
+import moment from 'moment'
+import { SingleDatePicker } from 'react-dates'
+import 'react-dates/lib/css/_datepicker.css'
+
+// const date = new Date() // but the Date API is messy...
+//! 1) Create a new moment to pass into react-dates to populate its initial day
+const now = moment() // current time + a ton of methods
+// console.log(now.format('MMM Do, YYYY'))
 
 export default class ExpenseForm extends React.Component {
   // we're going to want to use local component state to track changes to all these inputs
@@ -9,9 +18,13 @@ export default class ExpenseForm extends React.Component {
   state = {
     description: '',
     note: '',
-    amount: ''
+    amount: '',
+    //! 3) Add state for the date, a new instance of moment to pass down
+    createdAt: moment(),
+    calendarFocused: false
   }
 
+  //! 4) Customize props and functionality
   onDescriptionChange = (e) => {
     const description = e.target.value
     this.setState(() => ({ description }))
@@ -20,6 +33,14 @@ export default class ExpenseForm extends React.Component {
   onNoteChange = (e) => {
     const note = e.target.value
     this.setState(() => ({ note }))
+  }
+
+  onDateChange = (createdAt) => {
+    this.setState(() => ({ createdAt }))
+  }
+
+  onFocusChange = ({ focused }) => {
+    this.setState(() => ({ calendarFocused: focused }))
   }
 
   onAmountChange = (e) => {
@@ -50,6 +71,17 @@ export default class ExpenseForm extends React.Component {
             placeholder="Amount"
             value={this.state.amount}
             onChange={this.onAmountChange}
+          />
+          {/* 2) Place Date Picker component, past from doc as the required props */}
+          <SingleDatePicker
+            //! 4) Customize props and functionality
+            date={this.state.createdAt} // momentPropTypes.momentObj or null
+            onDateChange={this.onDateChange} // PropTypes.func.isRequired
+            focused={this.state.calendarFocused} // PropTypes.bool
+            onFocusChange={this.onFocusChange} // PropTypes.func.isRequired
+            id="created_by_component" // PropTypes.string.isRequired,
+            numberOfMonths={1}
+            isOutsideRange={() => false} // by default it's going to figure out today and future days, we want past too, we'll write logic to override what days should be available, many good use cases for this, like vacancy
           />
           <textarea //
             placeholder="Add a note for your expense (optional)"
