@@ -36,7 +36,9 @@ export default class ExpenseForm extends React.Component {
   }
 
   onDateChange = (createdAt) => {
-    this.setState(() => ({ createdAt }))
+    if (createdAt) {
+      this.setState(() => ({ createdAt }))
+    }
   }
 
   onFocusChange = ({ focused }) => {
@@ -48,7 +50,7 @@ export default class ExpenseForm extends React.Component {
     // here we'll use a fancy regular express to pattern match the input
     // regex101.com is a great tool for this
     // vv if this pattern matches, set the state! vv
-    if (amount.match(/^\d*(\.\d{0,2})?$/)) {
+    if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
       this.setState(() => ({ amount }))
     }
   }
