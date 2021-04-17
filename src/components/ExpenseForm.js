@@ -18,7 +18,22 @@ export default class ExpenseForm extends React.Component {
   // then only when the user submits the form will we do something with that information
   // - only when they submit the form will we send them off to redux to:
   //   - edit existing expense or create a new one
-  state = {
+  //! 8.) Set state to current values for target expense and use defaults if no expense was passed down, but if there is, start off at those values
+  //! BUT TO MAKE THAT WORK WE HAVE TO DEFINE OUR STATE IN THE CONSTRUCTOR FUNCTION!
+  constructor(props) {
+    super(props)
+    this.state = {
+      description: props.expense ? props.expense.description : '',
+      note: props.expense ? props.expense.note : '',
+      // amount is a number so we have to make it into a string again
+      amount: props.expense ? (props.expense.amount / 100).toString() : '',
+      // for createdAt we can just pass in a moment w/ timestamp
+      createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
+      calendarFocused: false,
+      error: ''
+    }
+  }
+  /*state = {
     description: '',
     note: '',
     amount: '',
@@ -26,7 +41,7 @@ export default class ExpenseForm extends React.Component {
     createdAt: moment(),
     calendarFocused: false,
     error: ''
-  }
+  }*/
 
   //! 4) Customize props and functionality
   onDescriptionChange = (e) => {

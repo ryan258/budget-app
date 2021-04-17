@@ -20,7 +20,7 @@ console.log(store.getState())
 
 store.dispatch(addExpense({ description: 'Water Bill', amount: 4500 }))
 store.dispatch(addExpense({ description: 'Gas bill', amount: 1820, createdAt: 2100 }))
-store.dispatch(addExpense({ description: 'Rent', amount: 109500 }))
+store.dispatch(addExpense({ description: 'Rent', amount: 109500, note: 'Welcome to cowlandia!' }))
 console.log(store.getState())
 
 // store.dispatch(setTextFilter('water'))
