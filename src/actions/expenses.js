@@ -1,5 +1,3 @@
-// expenses action generator
-// we'll make named exports out of each action so we can just import the ones we need when we need them
 import uuid from 'uuid'
 
 export const addExpense = ({ description = '', note = '', amount = 0, createdAt = 0 } = {}) => ({
