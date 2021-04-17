@@ -84,7 +84,15 @@ export default class ExpenseForm extends React.Component {
             onChange={this.onAmountChange}
           />
 
-          <SingleDatePicker date={this.state.createdAt} onDateChange={this.onDateChange} focused={this.state.calendarFocused} onFocusChange={this.onFocusChange} id="created_by_component" numberOfMonths={1} isOutsideRange={() => false} />
+          <SingleDatePicker //
+            date={this.state.createdAt}
+            onDateChange={this.onDateChange}
+            focused={this.state.calendarFocused}
+            onFocusChange={this.onFocusChange}
+            id="created_by_component"
+            numberOfMonths={1}
+            isOutsideRange={() => false}
+          />
           <textarea //
             placeholder="Add a note for your expense (optional)"
             value={this.state.note}
