@@ -1,4 +1,7 @@
 // This component will contain all the form markup and logic
+// The goal of this form is to be reused (in addExpensePage & editExpensePage)
+// - so we have to dispatch different stuff,
+// - so we'll pass the data up from this component in each of those pages to determine what will be done with the data onSubmit
 import React from 'react'
 //! 0) Imports
 import moment from 'moment'
@@ -56,6 +59,7 @@ export default class ExpenseForm extends React.Component {
     }
   }
 
+  //! 5) Add submit handler
   onSubmit = (e) => {
     e.preventDefault()
     // add validation for description and the amount
@@ -66,7 +70,17 @@ export default class ExpenseForm extends React.Component {
     } else {
       this.setState(() => ({ error: '' }))
       // Clear the error state
-      console.log('submitted')
+      // console.log('submitted')
+      //! 8) Wire in the props from the page component's <ExpenseForm onSubmit={...}
+      this.props.onSubmit({
+        description: this.state.description,
+        // reformat amount because it is currently a string
+        // then times 100 because we're working in cents
+        amount: parseFloat(this.state.amount, 10) * 100,
+        // createdAt is currently a moment object, so we have to get the timestamp back w/ valueOf
+        createdAt: this.state.createdAt.valueOf(),
+        note: this.state.note
+      })
     }
   }
 
