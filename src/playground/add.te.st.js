@@ -1,4 +1,4 @@
-const add = (a, b) => a + b
+/*const add = (a, b) => a + b
 const generateGreeting = (name = 'Anon') => `Hello, ${name}!`
 
 // jest provides us with a suite of global variables that allow us to contruct our test cases
@@ -29,3 +29,4 @@ test('should generate greeting for no name', () => {
   const result = generateGreeting()
   expect(result).toBe('Hello, Anon!')
 })
+*/
