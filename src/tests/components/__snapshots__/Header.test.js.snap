@@ -10,7 +10,7 @@ exports[`should render Header correctly 1`] = `
       <li>
         <NavLink
           activeClassName="is-active"
-          ariaCurrent="true"
+          aria-current="page"
           exact={true}
           to="/"
         >
@@ -20,7 +20,7 @@ exports[`should render Header correctly 1`] = `
       <li>
         <NavLink
           activeClassName="is-active"
-          ariaCurrent="true"
+          aria-current="page"
           to="/create"
         >
           Create Expense
