@@ -4,13 +4,17 @@ import { connect } from 'react-redux'
 import ExpenseListItem from './ExpenseListItem'
 import selectExpenses from '../selectors/expenses'
 
-const ExpenseList = (props) => (
+// if we want to test the component as an unconnected version we have to export this as a named export
+//! so we have 2 versions of this component
+//! - v this named export for our test cases v
+export const ExpenseList = (props) => (
   <div>
-    <h1>Expense List</h1>
-
-    {props.expenses.map((expense) => (
-      <ExpenseListItem key={expense.id} {...expense} />
-    ))}
+    {props.expenses.length === 0 ? (
+      <p>No expenses</p>
+    ) : (
+      //
+      props.expenses.map((expense) => <ExpenseListItem key={expense.id} {...expense} />)
+    )}
   </div>
 )
 
@@ -20,4 +24,5 @@ const mapStateToProps = (state) => {
   }
 }
 
+//! - v and this connected version for the app v
 export default connect(mapStateToProps)(ExpenseList)
