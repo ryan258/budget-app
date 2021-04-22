@@ -18,6 +18,7 @@ export default class ExpenseForm extends React.Component {
   }
 
   onDescriptionChange = (e) => {
+    // we have to make sure target.value exists in our test case
     const description = e.target.value
     this.setState(() => ({ description }))
   }
@@ -46,8 +47,10 @@ export default class ExpenseForm extends React.Component {
   }
 
   onSubmit = (e) => {
+    // this will cause an error in the test so we have to fake our way around it
     e.preventDefault()
     if (!this.state.description || !this.state.amount) {
+      // here we're testing for an error that will be in state that we can test for
       this.setState(() => ({ error: 'Please provide description and amount.' }))
     } else {
       this.setState(() => ({ error: '' }))
