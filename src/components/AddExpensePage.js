@@ -20,7 +20,7 @@ import { addExpense } from '../actions/expenses'
 // also export this class so we can import it into our tests!
 export class AddExpensePage extends React.Component {
   onSubmit = (expense) => {
-    this.props.onSubmit(expense)
+    this.props.addExpense(expense)
     this.props.history.push('/')
   }
   render() {
@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch) => {
   // goal is to return an object
   // and we define various props, and these props are going to call dispatch
   return {
-    onSubmit: (expense) => dispatch(addExpense(expense))
+    addExpense: (expense) => dispatch(addExpense(expense))
   }
 }
 // - arg0 - is mapStateToProps - and we don't have any state, so undefined it is

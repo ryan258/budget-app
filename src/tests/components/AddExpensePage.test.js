@@ -12,23 +12,23 @@ import expenses from '../fixtures/expenses'
 
 //!!! so we'll set up the spies for the component and then each test case can just use those
 // - we want to define fresh copies before each test case
-let onSubmit, history, wrapper
+let addExpense, history, wrapper
 
 // @ https://jestjs.io/docs/api#beforeeachfn-timeout
 beforeEach(() => {
   // these will run before each test case
-  onSubmit = jest.fn()
+  addExpense = jest.fn()
   history = { push: jest.fn() }
-  wrapper = shallow(<AddExpensePage onSubmit={onSubmit} history={history} />)
+  wrapper = shallow(<AddExpensePage addExpense={addExpense} history={history} />)
 })
 //! ^^ now we can reuse these in all our test cases! 👻
 
 test('should render AddExpensePage correctly', () => {
   //! 1) We'll set up some spies for the 2 things we'll pass into the component
   //! 1a) vv We'll move these up to beforeEach()
-  // const onSubmit = jest.fn()
+  // const addExpense = jest.fn()
   // const history = { push: jest.fn() }
-  // const wrapper = shallow(<AddExpensePage onSubmit={onSubmit} history={history} />)
+  // const wrapper = shallow(<AddExpensePage addExpense={addExpense} history={history} />)
   // now we can just take a snapshot of this and call it a day
   expect(wrapper).toMatchSnapshot()
 })
@@ -36,14 +36,14 @@ test('should render AddExpensePage correctly', () => {
 test('should handle onSubmit', () => {
   //! 1) We'll set up some spies for the 2 things we'll pass into the component
   //! 1a) vv We'll move these up to beforeEach()
-  // const onSubmit = jest.fn()
+  // const addExpense = jest.fn()
   // const history = { push: jest.fn() }
-  // const wrapper = shallow(<AddExpensePage onSubmit={onSubmit} history={history} />)
+  // const wrapper = shallow(<AddExpensePage addExpense={addExpense} history={history} />)
   //! 2) Now we'll actually call the onSubmit function with some fixture data
   wrapper.find('ExpenseForm').prop('onSubmit')(expenses[1])
   //! 3) Make sure things were called with all the right stuff
   // - spy #1 - history
   expect(history.push).toHaveBeenLastCalledWith('/')
   // - spy #2 - onSubmit - lastCalledWith the data we passed through
-  expect(onSubmit).toHaveBeenLastCalledWith(expenses[1])
+  expect(addExpense).toHaveBeenLastCalledWith(expenses[1])
 })
